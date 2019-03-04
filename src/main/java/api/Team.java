@@ -3,22 +3,22 @@ package api;
 import java.util.List;
 
 public class Team {
-    private String teamName;
+    private String name;
     private List<Employee> teamMembers;
     private Client client;
 
     public Team(String name, List<Employee> teamMembers, Client client) {
-        this.teamName = name;
+        this.name = name;
         this.teamMembers = teamMembers;
         this.client = client;
     }
 
-    public String getTeamName() {
-        return teamName;
+    public String getName() {
+        return name;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Employee> getTeamMembers() {
