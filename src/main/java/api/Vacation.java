@@ -1,53 +1,95 @@
 package api;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Vacation {
-    private Date to;
-    private Date from;
-    private Type type;
-    private String comment;
 
-    public enum Type {STUDY, REGULAR, MATERNITY}
+    private int id;
+    private Employee reviewer;
+    private Employee requester;
+    private String type;
+    private Boolean approved;
+    private String fromDate;
+    private String toDate;
+    private String description;
 
-    public Date getTo() {
-        return to;
+
+    public Vacation(Boolean approved, Employee reviewer) {
+        this.approved = approved;
+        this.reviewer = reviewer;
     }
 
-    public void setTo(Date to) {
-        this.to = to;
+    public int getId() {
+        return id;
     }
 
-    public Date getFrom() {
-        return from;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setFrom(Date from) {
-        this.from = from;
+    public Employee getReviewer() {
+        return reviewer;
     }
 
-    public Type getType() {
+    public void setReviewer(Employee reviewer) {
+        this.reviewer = reviewer;
+    }
+
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public String getComment() {
-        return comment;
+    public Boolean getApproved() {
+        return approved;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
+    }
+
+    public String getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(String fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(String toDate) {
+        this.toDate = toDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Employee getRequester() {
+        return requester;
+    }
+
+    public void setRequester(Employee requester) {
+        this.requester = requester;
     }
 
     public static List<Vacation> getVacations() {
         List<Vacation> vacations = new ArrayList<>();
-        for (int i = 10; i > 0; i--) {
-            vacations.add(new Vacation());
+        for (int i = 4; i > 0; i--) {
+            vacations.add(new Vacation(true, new Employee()));
+            vacations.add(new Vacation(false, new Employee()));
+            vacations.add(new Vacation(null, null));
         }
         return vacations;
     }

@@ -1,9 +1,6 @@
 package api;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,12 +21,24 @@ public class AccountingController {
     }
 
     @RequestMapping(value = "/reportHours", method = RequestMethod.POST)
-    public void reportHours(@RequestParam(value = "id") String id, @RequestParam(value = "workUnit") Work workUnit) {
+    public void reportHours(@RequestBody Work workUnit) {
         //TODO
     }
 
     @RequestMapping(value = "/requestVacation", method = RequestMethod.POST)
-    public void requestVacation(@RequestParam(value = "id") String id, @RequestParam(value = "workUnit") Vacation vacation) {
+    public void requestVacation(@RequestBody Vacation vacation) {
         //TODO
+    }
+
+    @RequestMapping("/reportedHourReview")
+    public List<Work> getReportedHoursToReview(@RequestParam(value = "managerId") int id) {
+        //TODO
+        return getWorkHours();
+    }
+
+    @RequestMapping("/requestedVacationReview")
+    public List<Vacation> getRequestedVacationsToReview(@RequestParam(value = "managerId") int id) {
+        //TODO
+        return getVacations();
     }
 }

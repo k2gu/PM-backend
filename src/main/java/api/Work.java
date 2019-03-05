@@ -1,20 +1,21 @@
 package api;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Work {
 
-    private Date date;
+    private String date;
     private double hoursSpent;
     private Team team;
     private Category category;
     private String taskID;
     private String description;
+    private Employee worker;
 
-    Work(Date workDone, int hoursSpent, Team team, Category category, String taskID, String description) {
+    Work(Employee worker, String workDone, int hoursSpent, Team team, Category category, String taskID, String description) {
         this.date = workDone;
+        this.worker = worker;
         this.hoursSpent = hoursSpent;
         this.team = team;
         this.category = category;
@@ -22,11 +23,11 @@ public class Work {
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -70,11 +71,18 @@ public class Work {
         this.description = description;
     }
 
+    public Employee getWorker() {
+        return worker;
+    }
+
+    public void setWorker(Employee worker) {
+        this.worker = worker;
+    }
 
     public static List<Work> getWorkHours() {
         List<Work> previouslyDoneWork = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            previouslyDoneWork.add(new Work(null, 10+i, new Team("Team name",
+            previouslyDoneWork.add(new Work(null, null, 10+i, new Team("Team name",
                     null, null), Category.DEVELOPMENT, "120429023", "description"));
         }
         return previouslyDoneWork;
