@@ -1,0 +1,91 @@
+package web.db.datamodel;
+
+import javax.persistence.*;
+
+@Entity
+public class Actor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int actorId;
+    @Column(name = "actor_type_id")
+    private int actorTypeId;
+    @Column(name = "reports_to_actor_id")
+    private Integer reportsToActorId;
+    @Column(name = "actor_name")
+    private String name;
+    private String identificator;
+    @Column(name = "avatar_uri")
+    private String avatarUri;
+    private double score;
+
+    public Actor(int actorId, int actorTypeId, int reportsToActorId, String name, String identificator, String avatarUri, double score) {
+        this.actorId = actorId;
+        this.actorTypeId = actorTypeId;
+        this.reportsToActorId = reportsToActorId;
+        this.name = name;
+        this.identificator = identificator;
+        this.avatarUri = avatarUri;
+        this.score = score;
+    }
+
+
+    public Actor() {
+
+    }
+
+    public int getActorId() {
+        return actorId;
+    }
+
+    public void setActorId(int actorId) {
+        this.actorId = actorId;
+    }
+
+    public int getActorTypeId() {
+        return actorTypeId;
+    }
+
+    public void setActorTypeId(int actorTypeId) {
+        this.actorTypeId = actorTypeId;
+    }
+
+    public int getReportsToActorId() {
+        return reportsToActorId;
+    }
+
+    public void setReportsToActorId(int reportsToActorId) {
+        this.reportsToActorId = reportsToActorId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getIdentificator() {
+        return identificator;
+    }
+
+    public void setIdentificator(String identificator) {
+        this.identificator = identificator;
+    }
+
+    public String getAvatarUri() {
+        return avatarUri;
+    }
+
+    public void setAvatarUri(String avatarUri) {
+        this.avatarUri = avatarUri;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+}
