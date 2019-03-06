@@ -18,7 +18,7 @@ public class Actor {
     private String avatarUri;
     private double score;
 
-    public Actor(int actorId, int actorTypeId, int reportsToActorId, String name, String identificator, String avatarUri, double score) {
+    public Actor(int actorId, int actorTypeId, Integer reportsToActorId, String name, String identificator, String avatarUri, double score) {
         this.actorId = actorId;
         this.actorTypeId = actorTypeId;
         this.reportsToActorId = reportsToActorId;
@@ -49,11 +49,11 @@ public class Actor {
         this.actorTypeId = actorTypeId;
     }
 
-    public int getReportsToActorId() {
+    public Integer getReportsToActorId() {
         return reportsToActorId;
     }
 
-    public void setReportsToActorId(int reportsToActorId) {
+    public void setReportsToActorId(Integer reportsToActorId) {
         this.reportsToActorId = reportsToActorId;
     }
 
