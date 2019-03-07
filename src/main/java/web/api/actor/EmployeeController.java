@@ -2,10 +2,11 @@ package web.api.actor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import web.db.datamodel.ActorType;
-import web.db.repositories.ActorRepository;
 import web.db.datamodel.Actor;
-import web.db.repositories.ActorTypeRepository;
+import web.db.datamodel.ActorType;
+import web.db.datamodel.InPosition;
+import web.db.datamodel.Positions;
+import web.db.repositories.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,14 @@ public class EmployeeController {
     ActorRepository actorRepository;
     @Autowired
     ActorTypeRepository actorTypeRepository;
+    @Autowired
+    PositionsRepository positionsRepository;
+    @Autowired
+    TeamRepository teamRepository;
+    @Autowired
+    InPositionRepository inPositionRepository;
+    @Autowired
+    InTeamRepository inTeamRepository;
 
     @RequestMapping("/types")
     public List<ActorType> actorTypes() {
@@ -28,6 +37,28 @@ public class EmployeeController {
     public List<Actor> employee() {
         return actorRepository.findAll();
     }
+
+    @RequestMapping("/positions")
+    public List<Positions> positions() {
+        return positionsRepository.findAll();
+    }
+
+    @RequestMapping("/teams")
+    public List<web.db.datamodel.Team> teams() {
+        return teamRepository.findAll();
+    }
+
+    @RequestMapping("/inpositions")
+    public List<InPosition> inPosition() {
+        return inPositionRepository.findAll();
+    }
+
+    @RequestMapping("/inteams")
+    public List<web.db.datamodel.InTeam> inTeam() {
+        return inTeamRepository.findAll();
+    }
+
+
 
 
     @RequestMapping("/allEmployees")
