@@ -12,5 +12,5 @@ import java.util.List;
 public interface InPositionRepository extends JpaRepository<InPosition, Integer> {
 
     @Query(value = "SELECT position_id FROM in_position WHERE actor_id=:id", nativeQuery = true)
-    List<Integer> findPositionsByActorId(@Param("id") int id);
+    List<Integer> findPositionIdByActorId(@Param("id") int id);
 }

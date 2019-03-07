@@ -2,10 +2,8 @@ package web.api.actor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import web.db.datamodel.Actor;
-import web.db.datamodel.ActorType;
-import web.db.datamodel.InPosition;
-import web.db.datamodel.Positions;
+import web.db.datamodel.*;
+import web.db.datamodel.Position;
 import web.db.repositories.*;
 
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ public class EmployeeController {
     }
 
     @RequestMapping("/positions")
-    public List<Positions> positions() {
+    public List<Position> positions() {
         return positionsRepository.findAll();
     }
 
@@ -64,7 +62,7 @@ public class EmployeeController {
         for (Actor actor : allEmployees) {
             int id = actor.getActorId();
             String positionName = getPositionName(id);
-            Position position = new Position(positionName);
+            web.api.actor.Position position = new web.api.actor.Position(positionName);
             //TODO iban is missing
             Employee employee = new Employee(actor.getActorId(), actor.getName(), position, null, actor.getScore(), actor.getIdentificator(), null);
             employees.add(employee);
@@ -73,21 +71,46 @@ public class EmployeeController {
     }
 
     private String getPositionName(int id) {
-        List<Integer> positionIds = inPositionRepository.findPositionsByActorId(id);
+        List<Integer> positionIds = inPositionRepository.findPositionIdByActorId(id);
         //TODO kui on mitu positionit
         return positionsRepository.findPositionName(positionIds.get(0));
     }
 
     @RequestMapping("/employeeDetails")
-    public Employee getEmployeeDetails(@RequestParam(required = true, value = "id") String id) {
-        //TODO get employee by id
-        Position myPosition = new Position("Job title", 100.0, 0.1);
-        Position messagerPosition = new Position("Manager", 200.0, 0.2);
-        Client client = new Client("I am a .Client", "businessNumber", 99.8);
-        Team team = new Team("web.api.actor.Team name", null, client);
-        Employee employee = new Employee(1, "Employee Name Me", myPosition, team,
-                65.9, "SSN58390384082", "IBAN4890859084504938054");
-        return employee;
+    public Employee getEmployeeDetails(@RequestParam(required = true, value = "id") int id) {
+        Actor actor = actorRepository.getOne(id);
+        String positionName = getPositionName(id);
+        List<Integer> positionIds = inPositionRepository.findPositionIdByActorId(id);
+        Position position = positionsRepository.getPositionById(positionIds.get(0));
+        web.api.actor.Position convertedPosition = new web.api.actor.Position(positionName, position.getPricePerHour(),
+                position.getSalaryCoef());
+        List<InTeam> team = inTeamRepository.getTeamByActorId(id);
+        List<web.api.actor.Team> convertedTeam = addTeamNamesToTeam(team);
+        return new Employee(actor.getActorId(), actor.getName(), convertedPosition, convertedTeam,
+                actor.getScore(), actor.getIdentificator(), null);
+    }
+
+    private List<web.api.actor.Team> addTeamNamesToTeam(List<InTeam> team) {
+        List<web.api.actor.Team> convertedTeams = new ArrayList<>();
+        for (InTeam team1 : team) {
+            String name = teamRepository.getTeamName(team1.getTeamId());
+            Actor client = getClientByTeam(team1.getTeamId());
+            Client convertedClient = client == null ? null : new Client(client.getActorId(), client.getName(),
+                    client.getIdentificator(), client.getScore());
+            convertedTeams.add(new web.api.actor.Team(name, convertedClient));
+        }
+        return convertedTeams;
+    }
+
+    private Actor getClientByTeam(int teamID) {
+        List<Actor> clientRepresentatives = actorRepository.getClientRepresentatives();
+        List<Integer> teamMembers = inTeamRepository.getTeamMembers(teamID);
+        for (Actor actor : clientRepresentatives) {
+            if (teamMembers.contains(actor.getActorId())) {
+                return actor;
+            }
+        }
+        return null;
     }
 
     @RequestMapping(value = "/rateEmployee", method = RequestMethod.POST)

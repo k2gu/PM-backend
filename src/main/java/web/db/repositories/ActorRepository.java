@@ -15,5 +15,7 @@ public interface ActorRepository extends JpaRepository<Actor, Integer> {
     public List<Actor> getAllEmployees();
 
 
+    @Query(value = "SELECT * FROM actor WHERE actor_type_id=3", nativeQuery = true)
+    List<Actor> getClientRepresentatives();
 }
 

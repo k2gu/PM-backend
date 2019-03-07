@@ -85,8 +85,7 @@ public class Work {
     public static List<Work> getWorkHours() {
         List<Work> previouslyDoneWork = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            previouslyDoneWork.add(new Work(null, null, 10+i, new Team("Team name",
-                    null, null), Category.DEVELOPMENT, "120429023", "description"));
+            previouslyDoneWork.add(new Work(null, null, 10 + i, null, Category.DEVELOPMENT, "120429023", "description"));
         }
         return previouslyDoneWork;
     }

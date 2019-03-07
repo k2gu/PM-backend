@@ -1,10 +1,12 @@
 package web.api.actor;
 
+import java.util.List;
+
 public class Employee {
     private int id;
     private String name;
     private Position position;
-    private Team team;
+    private List<Team> teams;
     //private BitMap image;
     private double score;
     private String ssn;
@@ -13,12 +15,12 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int id, String name, Position position, Team team, double score, String ssn, String iban) {
+    public Employee(int id, String name, Position position, List<Team> teams, double score, String ssn, String iban) {
         this.id = id;
         this.name = name;
         this.position = position;
-        this.team = team;
-       // this.image = image;
+        this.teams = teams;
+        // this.image = image;
         this.score = score;
         this.ssn = ssn;
         this.iban = iban;
@@ -48,12 +50,12 @@ public class Employee {
         this.position = position;
     }
 
-    public Team getTeam() {
-        return team;
+    public List<Team> getTeams() {
+        return teams;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setTeam(List<Team> teams) {
+        this.teams = teams;
     }
 
     public double getScore() {
