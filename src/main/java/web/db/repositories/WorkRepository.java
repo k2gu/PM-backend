@@ -21,9 +21,11 @@ public interface WorkRepository extends JpaRepository<WorkUnit, Integer> {
                      @Param("date_done") Date doneDate, @Param("time_spent") double timeSpent, @Param("task_number") String taskNumber,
                      @Param("description") String description);
 
-    //TODO
-    @Query(value = "SELECT `Type` FROM work_type WHERE work_type_id=:id", nativeQuery = true)
-    String getWorkToReview(@Param("id") int managerId);
+    @Query(value = "UPDATE work_unit SET reviewer_actor_id=:id AND approved=:approved WHERE work_id=:work_id", nativeQuery = true)
+    void addActionToWork(@Param("id") int id, @Param("approved") boolean isApproved, @Param("work_id") int workId);
+
+    @Query(value = "SELECT * FROM work_unit WHERE in_position_id=:id AND reviewer_actor_id=NULL AND approved=NULL", nativeQuery = true)
+    List<WorkUnit> getReportedWorkInPositionToReview(@Param("id") int inPositionId);
 }
 
 

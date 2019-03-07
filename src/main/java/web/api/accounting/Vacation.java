@@ -3,7 +3,7 @@ package web.api.accounting;
 public class Vacation {
 
     private int id;
-    private int reviewer;
+    private Integer reviewer;
     private int requester;
     private String type;
     private Boolean approved;
@@ -11,10 +11,23 @@ public class Vacation {
     private String toDate;
     private String description;
 
-
-    public Vacation(Boolean approved, int reviewer) {
-        this.approved = approved;
+    public Vacation(int id, int reviewer, int requester, String type, Boolean approved, String fromDate, String toDate, String description) {
+        this.id = id;
         this.reviewer = reviewer;
+        this.requester = requester;
+        this.type = type;
+        this.approved = approved;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.description = description;
+    }
+    public Vacation(int id, int requester, String type, String fromDate, String toDate, String description) {
+        this.id = id;
+        this.requester = requester;
+        this.type = type;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.description = description;
     }
 
     public int getId() {
@@ -25,11 +38,11 @@ public class Vacation {
         this.id = id;
     }
 
-    public int getReviewer() {
+    public Integer getReviewer() {
         return reviewer;
     }
 
-    public void setReviewer(int reviewer) {
+    public void setReviewer(Integer reviewer) {
         this.reviewer = reviewer;
     }
 

@@ -17,17 +17,7 @@ public class Actor {
     @Column(name = "avatar_uri")
     private String avatarUri;
     private double score;
-
-    public Actor(int actorId, int actorTypeId, Integer reportsToActorId, String name, String identificator, String avatarUri, double score) {
-        this.actorId = actorId;
-        this.actorTypeId = actorTypeId;
-        this.reportsToActorId = reportsToActorId;
-        this.name = name;
-        this.identificator = identificator;
-        this.avatarUri = avatarUri;
-        this.score = score;
-    }
-
+    private String iban;
 
     public Actor() {
 
@@ -87,5 +77,13 @@ public class Actor {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
     }
 }

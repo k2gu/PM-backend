@@ -105,10 +105,23 @@ public class AccountingController {
 
     @RequestMapping("/requestedVacations")
     public List<Vacation> getRequestedVacations(@RequestParam(value = "id") int id) {
+        List<Vacation> vacations = new ArrayList<>();
         List<web.db.datamodel.Vacation> vacationsModel = vacationRepository.getEmployeeVacations(id);
-        return null;
+
+        for (web.db.datamodel.Vacation vacation : vacationsModel) {
+            String type = vacationTypeRepository.getVacationTypeName(vacation.getVacationTypeId());
+            vacations.add(new Vacation(vacation.getVacationId(), vacation.getReviewerId(), vacation.getRequestedByActor(),
+                    type, vacation.getApproved(), dateToString(vacation.getFromDate()), dateToString(vacation.getToDate()),
+                    vacation.getDescription()));
+        }
+
+        return vacations;
     }
 
+
+    private String dateToString(Date date) {
+        return new SimpleDateFormat("dd.MM.yyyy").format(date);
+    }
 
     @RequestMapping("/vacationTypes")
     public List<String> getVacationTypes() {
@@ -117,13 +130,56 @@ public class AccountingController {
 
     @RequestMapping("/reportedHourReview")
     public List<Work> getReportedHoursToReview(@RequestParam(value = "managerId") int id) {
-        //TODO
-        return null;
+        List<Work> workToReview = new ArrayList<>();
+        List<Actor> mySubordinates = actorRepository.getSubordinates(id);
+        for (Actor actor : mySubordinates) {
+            List<Integer> inPositionIds = inPositionRepository.findInPositionIdByActorId(actor.getActorId());
+            for (int inPositionId : inPositionIds) {
+                List<web.db.datamodel.WorkUnit> workUnits = workRepository.getReportedWorkInPositionToReview(inPositionId);
+                int positionId = inPositionRepository.findPositionIdByInPositionID(inPositionId);
+                String positionName = positionsRepository.findPositionName(positionId);
+                for (WorkUnit workUnit : workUnits) {
+                    String workType = workTypeRepository.getWorkTypeName(workUnit.getWorkTypeId());
+                    int teamId = inTeamRepository.getTeamId(workUnit.getInTeamId());
+                    String teamName = teamRepository.getTeamName(teamId);
+                    Actor actorClient = getClientByTeam(teamId);
+                    Client client = actorClient == null ? null : new Client(actorClient.getActorId(), actorClient.getName());
+                    workToReview.add(new Work(actor.getActorId(), workType, workUnit.getTimeSpent(), new Team(teamName, client),
+                            positionName, workUnit.getTasknumber(), workUnit.getDescription()));
+                }
+            }
+        }
+
+        return workToReview;
     }
 
     @RequestMapping("/requestedVacationReview")
     public List<Vacation> getRequestedVacationsToReview(@RequestParam(value = "managerId") int id) {
-        //TODO
-        return null;
+        List<Vacation> vacations = new ArrayList<>();
+        List<Actor> mySubordinates = actorRepository.getSubordinates(id);
+        for (Actor subordinate : mySubordinates) {
+            List<web.db.datamodel.Vacation> vacationsModel = vacationRepository.getEmployeeVacationsToReview(subordinate.getActorId());
+            for (web.db.datamodel.Vacation vacation : vacationsModel) {
+                String vacationType = vacationTypeRepository.getVacationTypeName(vacation.getVacationTypeId());
+                vacations.add(new Vacation(vacation.getVacationId(), vacation.getRequestedByActor(),
+                        vacationType, dateToString(vacation.getFromDate()), dateToString(vacation.getToDate()),
+                        vacation.getDescription()));
+            }
+        }
+        return vacations;
+    }
+
+    @RequestMapping("/addActionToVacation")
+    public void addActionToVacation(@RequestParam(value = "id") int id,
+                                    @RequestParam(value = "approved") boolean isApproved,
+                                    @RequestParam(value = "vacationId") int vacationId) {
+        vacationRepository.addActionToVacation(id, isApproved, vacationId);
+    }
+
+    @RequestMapping("/addActionToWorkUnit")
+    public void addActionToWorkUnit(@RequestParam(value = "id") int id,
+                                    @RequestParam(value = "approved") boolean isApproved,
+                                    @RequestParam(value = "workUnitId") int workId) {
+        workRepository.addActionToWork(id, isApproved, workId);
     }
 }

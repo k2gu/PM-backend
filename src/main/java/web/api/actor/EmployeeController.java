@@ -35,8 +35,7 @@ public class EmployeeController {
             int id = actor.getActorId();
             String positionName = getPositionName(id);
             web.api.actor.Position position = new web.api.actor.Position(positionName);
-            //TODO iban is missing
-            Employee employee = new Employee(actor.getActorId(), actor.getName(), position, null, actor.getScore(), actor.getIdentificator(), null);
+            Employee employee = new Employee(actor.getActorId(), actor.getName(), position, null, actor.getScore(), actor.getIdentificator(), actor.getIban());
             employees.add(employee);
         }
         return employees;

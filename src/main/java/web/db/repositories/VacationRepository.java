@@ -19,4 +19,10 @@ public interface VacationRepository extends JpaRepository<Vacation, Integer> {
 
     @Query(value = "SELECT * FROM vacation WHERE requested_by_actor_id=:id", nativeQuery = true)
     List<Vacation> getEmployeeVacations(@Param("id") int id);
+
+    @Query(value = "SELECT * FROM vacation WHERE requested_by_actor=:id AND reviewer_actor_id=NULL AND approved=NULL", nativeQuery = true)
+    List<Vacation> getEmployeeVacationsToReview(@Param("id") int employeeId);
+
+    @Query(value = "UPDATE vacation SET reviewer_actor_id=:id AND approved=:approved WHERE vacation_id=:vacationId", nativeQuery = true)
+    String addActionToVacation(@Param("id") int managerId, @Param("approved") boolean isApproved, @Param("vacationId") int vacationId);
 }
