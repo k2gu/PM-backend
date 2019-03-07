@@ -15,4 +15,7 @@ public interface PositionsRepository extends JpaRepository<Position, Integer> {
 
     @Query(value = "SELECT * FROM position WHERE position_id=:id", nativeQuery = true)
     Position getPositionById(@Param("id") int id);
+
+    @Query(value = "SELECT position_id FROM position WHERE position_title=:category", nativeQuery = true)
+    int getPositionId(@Param("category") String category);
 }

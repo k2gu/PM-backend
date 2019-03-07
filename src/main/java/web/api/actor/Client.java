@@ -6,6 +6,12 @@ public class Client {
 
     public Client(int id, String name, String businessNumber, double score) {
         this.name = name;
+        this.id = id;
+    }
+
+    public Client(int actorId, String name) {
+        this.id = actorId;
+        this.name = name;
     }
 
     public String getName() {

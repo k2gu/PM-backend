@@ -16,8 +16,6 @@ public class EmployeeController {
     @Autowired
     ActorRepository actorRepository;
     @Autowired
-    ActorTypeRepository actorTypeRepository;
-    @Autowired
     PositionsRepository positionsRepository;
     @Autowired
     TeamRepository teamRepository;

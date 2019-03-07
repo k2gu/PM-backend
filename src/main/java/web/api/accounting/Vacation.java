@@ -1,15 +1,10 @@
 package web.api.accounting;
 
-import web.api.actor.Employee;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Vacation {
 
     private int id;
-    private Employee reviewer;
-    private Employee requester;
+    private int reviewer;
+    private int requester;
     private String type;
     private Boolean approved;
     private String fromDate;
@@ -17,7 +12,7 @@ public class Vacation {
     private String description;
 
 
-    public Vacation(Boolean approved, Employee reviewer) {
+    public Vacation(Boolean approved, int reviewer) {
         this.approved = approved;
         this.reviewer = reviewer;
     }
@@ -30,11 +25,11 @@ public class Vacation {
         this.id = id;
     }
 
-    public Employee getReviewer() {
+    public int getReviewer() {
         return reviewer;
     }
 
-    public void setReviewer(Employee reviewer) {
+    public void setReviewer(int reviewer) {
         this.reviewer = reviewer;
     }
 
@@ -78,21 +73,11 @@ public class Vacation {
         this.description = description;
     }
 
-    public Employee getRequester() {
+    public int getRequester() {
         return requester;
     }
 
-    public void setRequester(Employee requester) {
+    public void setRequester(int requester) {
         this.requester = requester;
-    }
-
-    public static List<Vacation> getVacations() {
-        List<Vacation> vacations = new ArrayList<>();
-        for (int i = 4; i > 0; i--) {
-            vacations.add(new Vacation(true, new Employee()));
-            vacations.add(new Vacation(false, new Employee()));
-            vacations.add(new Vacation(null, null));
-        }
-        return vacations;
     }
 }

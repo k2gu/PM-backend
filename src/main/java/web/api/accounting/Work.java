@@ -1,24 +1,20 @@
 package web.api.accounting;
 
-import web.api.actor.Employee;
 import web.api.actor.Team;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Work {
 
     private String date;
     private double hoursSpent;
     private Team team;
-    private Category category;
+    private String category;
     private String taskID;
     private String description;
-    private Employee worker;
+    private int employeeId;
 
-    Work(Employee worker, String workDone, int hoursSpent, Team team, Category category, String taskID, String description) {
+    Work(int employeeId, String workDone, double hoursSpent, Team team, String category, String taskID, String description) {
         this.date = workDone;
-        this.worker = worker;
+        this.employeeId = employeeId;
         this.hoursSpent = hoursSpent;
         this.team = team;
         this.category = category;
@@ -50,11 +46,11 @@ public class Work {
         this.team = team;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -74,21 +70,11 @@ public class Work {
         this.description = description;
     }
 
-    public Employee getWorker() {
-        return worker;
+    public int getWorker() {
+        return employeeId;
     }
 
-    public void setWorker(Employee worker) {
-        this.worker = worker;
+    public void setWorker(int workerId) {
+        this.employeeId = workerId;
     }
-
-    public static List<Work> getWorkHours() {
-        List<Work> previouslyDoneWork = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            previouslyDoneWork.add(new Work(null, null, 10 + i, null, Category.DEVELOPMENT, "120429023", "description"));
-        }
-        return previouslyDoneWork;
-    }
-
-    private enum Category {MEETINGS, TESTING, DEVELOPMENT, ANALYSIS, OTHER_WORK}
 }
