@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import web.db.datamodel.*;
 import web.db.datamodel.Position;
-import web.db.repositories.*;
+import web.db.repositories.actor.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class EmployeeController {
     InPositionRepository inPositionRepository;
     @Autowired
     InTeamRepository inTeamRepository;
-    
+
     @RequestMapping("/allEmployees")
     public List<Employee> getAllEmployees() {
         return convertsActorToEmployee(actorRepository.getAllEmployees());
