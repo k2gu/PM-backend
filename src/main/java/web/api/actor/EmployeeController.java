@@ -2,8 +2,10 @@ package web.api.actor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import web.db.ActorRepository;
+import web.db.datamodel.ActorType;
+import web.db.repositories.ActorRepository;
 import web.db.datamodel.Actor;
+import web.db.repositories.ActorTypeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +15,24 @@ import java.util.Map;
 public class EmployeeController {
 
     @Autowired
-    ActorRepository repository;
+    ActorRepository actorRepository;
+    @Autowired
+    ActorTypeRepository actorTypeRepository;
 
-    @RequestMapping("/allEmployees")
-    public List<Employee> getAllEmployees() {
-        return getEmployees();
+    @RequestMapping("/types")
+    public List<ActorType> actorTypes() {
+        return actorTypeRepository.findAll();
     }
 
     @RequestMapping("/employee")
     public List<Actor> employee() {
-        return repository.findAll();
+        return actorRepository.findAll();
+    }
+
+
+    @RequestMapping("/allEmployees")
+    public List<Employee> getAllEmployees() {
+        return getEmployees();
     }
 
     @RequestMapping("/employeeDetails")
