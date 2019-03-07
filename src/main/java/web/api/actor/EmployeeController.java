@@ -25,33 +25,7 @@ public class EmployeeController {
     InPositionRepository inPositionRepository;
     @Autowired
     InTeamRepository inTeamRepository;
-
-    @RequestMapping("/types")
-    public List<ActorType> actorTypes() {
-        return actorTypeRepository.findAll();
-    }
-
-    @RequestMapping("/positions")
-    public List<Position> positions() {
-        return positionsRepository.findAll();
-    }
-
-    @RequestMapping("/teams")
-    public List<web.db.datamodel.Team> teams() {
-        return teamRepository.findAll();
-    }
-
-    @RequestMapping("/inpositions")
-    public List<InPosition> inPosition() {
-        return inPositionRepository.findAll();
-    }
-
-    @RequestMapping("/inteams")
-    public List<web.db.datamodel.InTeam> inTeam() {
-        return inTeamRepository.findAll();
-    }
-
-
+    
     @RequestMapping("/allEmployees")
     public List<Employee> getAllEmployees() {
         return convertsActorToEmployee(actorRepository.getAllEmployees());
@@ -115,6 +89,11 @@ public class EmployeeController {
 
     @RequestMapping(value = "/rateEmployee", method = RequestMethod.POST)
     public void setEmployeeRating(@RequestBody Map<Employee, Double> employeeScore) {
+        //TODO
+    }
+
+    @RequestMapping(value = "/editDetails", method = RequestMethod.POST)
+    public void editEmplpoyeeDetails(@RequestBody Employee employee) {
         //TODO
     }
 }
