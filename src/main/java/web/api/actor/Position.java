@@ -1,23 +1,25 @@
 package web.api.actor;
 
 public class Position {
-    private JobTitle jobTitle;
+    private String jobTitle;
     private double standardPricePerHour;
     private double salaryCoefficient;
 
-    public Position(JobTitle jobTitle, double standardPricePerHour, double coefficient) {
+    public Position(String  jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public Position(String jobTitle, double standardPricePerHour, double coefficient) {
         this.jobTitle = jobTitle;
         this.standardPricePerHour = standardPricePerHour;
         this.salaryCoefficient = coefficient;
     }
 
-    public enum JobTitle {MANAGER, SOFTWARE_ENGINEER, QUALITY_ENGINEER}
-
-    public JobTitle getJobTitle() {
+    public String getJobTitle() {
         return jobTitle;
     }
 
-    public void setJobTitle(JobTitle jobTitle) {
+    public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
 

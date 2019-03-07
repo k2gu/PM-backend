@@ -31,8 +31,8 @@ public class Message {
     }
 
     public static List<Message> getMockedMessagesList() {
-        Position myPosition = new Position(Position.JobTitle.SOFTWARE_ENGINEER, 100.0, 0.1);
-        Position messagerPosition = new Position(Position.JobTitle.MANAGER, 200.0, 0.2);
+        Position myPosition = new Position("SOFTWARE_ENGINEER", 100.0, 0.1);
+        Position messagerPosition = new Position("MANAGER", 200.0, 0.2);
         Client client = new Client("I am a Client", "businessNumber", 99.8);
         Team team = new Team("Team name", null, client);
         Employee me = new Employee(1, "Employee Name Me", myPosition, team,

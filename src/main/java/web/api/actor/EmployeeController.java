@@ -33,11 +33,6 @@ public class EmployeeController {
         return actorTypeRepository.findAll();
     }
 
-    @RequestMapping("/employee")
-    public List<Actor> employee() {
-        return actorRepository.findAll();
-    }
-
     @RequestMapping("/positions")
     public List<Positions> positions() {
         return positionsRepository.findAll();
@@ -59,18 +54,35 @@ public class EmployeeController {
     }
 
 
-
-
     @RequestMapping("/allEmployees")
     public List<Employee> getAllEmployees() {
-        return getEmployees();
+        return convertsActorToEmployee(actorRepository.getAllEmployees());
+    }
+
+    private List<Employee> convertsActorToEmployee(List<Actor> allEmployees) {
+        List<Employee> employees = new ArrayList<>();
+        for (Actor actor : allEmployees) {
+            int id = actor.getActorId();
+            String positionName = getPositionName(id);
+            Position position = new Position(positionName);
+            //TODO iban is missing
+            Employee employee = new Employee(actor.getActorId(), actor.getName(), position, null, actor.getScore(), actor.getIdentificator(), null);
+            employees.add(employee);
+        }
+        return employees;
+    }
+
+    private String getPositionName(int id) {
+        List<Integer> positionIds = inPositionRepository.findPositionsByActorId(id);
+        //TODO kui on mitu positionit
+        return positionsRepository.findPositionName(positionIds.get(0));
     }
 
     @RequestMapping("/employeeDetails")
     public Employee getEmployeeDetails(@RequestParam(required = true, value = "id") String id) {
         //TODO get employee by id
-        Position myPosition = new Position(Position.JobTitle.SOFTWARE_ENGINEER, 100.0, 0.1);
-        Position messagerPosition = new Position(Position.JobTitle.MANAGER, 200.0, 0.2);
+        Position myPosition = new Position("Job title", 100.0, 0.1);
+        Position messagerPosition = new Position("Manager", 200.0, 0.2);
         Client client = new Client("I am a .Client", "businessNumber", 99.8);
         Team team = new Team("web.api.actor.Team name", null, client);
         Employee employee = new Employee(1, "Employee Name Me", myPosition, team,
@@ -81,25 +93,5 @@ public class EmployeeController {
     @RequestMapping(value = "/rateEmployee", method = RequestMethod.POST)
     public void setEmployeeRating(@RequestBody Map<Employee, Double> employeeScore) {
         //TODO
-    }
-
-    private List<Employee> getEmployees() {
-        List<Employee> employeesList = new ArrayList<>();
-
-        Position myPosition = new Position(Position.JobTitle.SOFTWARE_ENGINEER, 100.0, 0.1);
-        Position messagerPosition = new Position(Position.JobTitle.MANAGER, 200.0, 0.2);
-        Client client = new Client("I am a Client", "businessNumber", 99.8);
-        Team team = new Team("web.api.actor.Team name", null, client);
-        Employee employee1 = new Employee(1, "Employee Name Me", myPosition, team,
-                65.9, "SSN58390384082", "IBAN4890859084504938054");
-        Employee employee2 = new Employee(2, "Employee Name Messager", messagerPosition, team,
-                70.8, "SSN94085904", "IBANk484853905854389053");
-        for (int i = 0; i < 10; i++) {
-            employee1.setId(100 + i);
-            employee2.setId(200 + i);
-            employeesList.add(employee1);
-            employeesList.add(employee2);
-        }
-        return employeesList;
     }
 }
