@@ -2,10 +2,14 @@ package web.api.actor;
 
 public class Client {
     private String name;
+    private String businessNumber;
+    private double score;
     private int id;
 
     public Client(int id, String name, String businessNumber, double score) {
         this.name = name;
+        this.businessNumber = businessNumber;
+        this.score = score;
         this.id = id;
     }
 

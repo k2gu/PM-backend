@@ -1,13 +1,15 @@
 package web.api.messages;
 
+import web.api.actor.Employee;
+
 public class Message {
     private Integer messageId;
     private int to;
-    private int from;
+    private Employee from;
     private String timestamp;
     private String message;
 
-    public Message(Integer messageId, int employeeTo, int employeeFrom, String timeStamp, String message) {
+    public Message(Integer messageId, int employeeTo, Employee employeeFrom, String timeStamp, String message) {
         this.to = employeeTo;
         this.messageId = messageId;
         this.from = employeeFrom;
@@ -19,8 +21,12 @@ public class Message {
         return to;
     }
 
-    public String getMessage() {
-        return message;
+    public Integer getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(Integer messageId) {
+        this.messageId = messageId;
     }
 
     public int getTo() {
@@ -31,11 +37,11 @@ public class Message {
         this.to = to;
     }
 
-    public int getFrom() {
+    public Employee getFrom() {
         return from;
     }
 
-    public void setFrom(int from) {
+    public void setFrom(Employee from) {
         this.from = from;
     }
 
@@ -47,6 +53,9 @@ public class Message {
         this.timestamp = timestamp;
     }
 
+    public String getMessage() {
+        return message;
+    }
 
     public void setMessage(String message) {
         this.message = message;

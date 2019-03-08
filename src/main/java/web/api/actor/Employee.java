@@ -26,6 +26,11 @@ public class Employee {
         this.iban = iban;
     }
 
+    public Employee(int employeeId, String name) {
+        this.id = employeeId;
+        this.name = name;
+    }
+
     public void setId(int id) {
         this.id = id;
     }

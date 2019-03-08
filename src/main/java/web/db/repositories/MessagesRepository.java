@@ -13,14 +13,16 @@ import java.util.List;
 @Repository
 public interface MessagesRepository extends JpaRepository<Message, Integer> {
 
-    @Query(value = "SELECT * FROM message WHERE to_actor=:id", nativeQuery = true)
+    @Query(value = "SELECT * FROM message WHERE to_actor=:id AND is_read=0", nativeQuery = true)
     List<Message> getActorsMessages(@Param("id") int id);
 
+    @Transactional
+    @Modifying
     @Query(value = "INSERT INTO message (from_actor, to_actor, message) VALUES (:from, :to, :message)", nativeQuery = true)
     void addMessage(@Param("from") int from, @Param("to") int to, @Param("message") String message);
 
     @Transactional
     @Modifying
-    @Query(value = "DELETE FROM message WHERE message_id=:id", nativeQuery = true)
+    @Query(value = "UPDATE message SET is_read=true WHERE message_id=:id", nativeQuery = true)
     void removeMessage(@Param("id") int id);
 }

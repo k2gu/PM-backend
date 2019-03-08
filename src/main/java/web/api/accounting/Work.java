@@ -1,20 +1,23 @@
 package web.api.accounting;
 
+import web.api.actor.Employee;
 import web.api.actor.Team;
 
 public class Work {
 
+    private Integer id;
     private String date;
     private double hoursSpent;
     private Team team;
     private String category;
     private String taskID;
     private String description;
-    private int employeeId;
+    private Employee employee;
 
-    Work(int employeeId, String workDone, double hoursSpent, Team team, String category, String taskID, String description) {
+    Work(Integer id, Employee employee, String workDone, double hoursSpent, Team team, String category, String taskID, String description) {
+        this.id = id;
         this.date = workDone;
-        this.employeeId = employeeId;
+        this.employee = employee;
         this.hoursSpent = hoursSpent;
         this.team = team;
         this.category = category;
@@ -70,11 +73,11 @@ public class Work {
         this.description = description;
     }
 
-    public int getWorker() {
-        return employeeId;
+    public Employee getWorker() {
+        return employee;
     }
 
-    public void setWorker(int workerId) {
-        this.employeeId = workerId;
+    public void setWorker(Employee worker) {
+        this.employee = worker;
     }
 }

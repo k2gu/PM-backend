@@ -1,17 +1,19 @@
 package web.api.accounting;
 
+import web.api.actor.Employee;
+
 public class Vacation {
 
-    private int id;
+    private Integer id;
     private Integer reviewer;
-    private int requester;
+    private Employee requester;
     private String type;
     private Boolean approved;
     private String fromDate;
     private String toDate;
     private String description;
 
-    public Vacation(int id, int reviewer, int requester, String type, Boolean approved, String fromDate, String toDate, String description) {
+    public Vacation(Integer id, int reviewer, Employee requester, String type, Boolean approved, String fromDate, String toDate, String description) {
         this.id = id;
         this.reviewer = reviewer;
         this.requester = requester;
@@ -21,7 +23,7 @@ public class Vacation {
         this.toDate = toDate;
         this.description = description;
     }
-    public Vacation(int id, int requester, String type, String fromDate, String toDate, String description) {
+    public Vacation(Integer id, Employee requester, String type, String fromDate, String toDate, String description) {
         this.id = id;
         this.requester = requester;
         this.type = type;
@@ -86,11 +88,11 @@ public class Vacation {
         this.description = description;
     }
 
-    public int getRequester() {
+    public Employee getRequester() {
         return requester;
     }
 
-    public void setRequester(int requester) {
+    public void setRequester(Employee requester) {
         this.requester = requester;
     }
 }

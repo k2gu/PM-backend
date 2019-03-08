@@ -3,6 +3,7 @@ package web.api.accounting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import web.api.actor.Client;
+import web.api.actor.Employee;
 import web.api.actor.Team;
 import web.db.datamodel.Actor;
 import web.db.datamodel.WorkUnit;
@@ -53,12 +54,18 @@ public class AccountingController {
                 String teamName = teamRepository.getTeamName(teamId);
                 Actor actorClient = getClientByTeam(teamId);
                 Client client = actorClient == null ? null : new Client(actorClient.getActorId(), actorClient.getName());
-                convertedList.add(new Work(employeeId, workType, workUnit.getTimeSpent(), new Team(teamName, client),
+                Employee employee = getShortVersionEmployeeByActorId(employeeId);
+                convertedList.add(new Work(workUnit.getWorkUnitId(), employee, workType, workUnit.getTimeSpent(), new Team(teamName, client),
                         positionName, workUnit.getTasknumber(), workUnit.getDescription()));
             }
         }
 
         return convertedList;
+    }
+
+    private Employee getShortVersionEmployeeByActorId(int actorId) {
+        Actor actorEmployee = actorRepository.getOne(actorId);
+        return new Employee(actorId, actorEmployee.getName());
     }
 
     private Actor getClientByTeam(int teamID) {
@@ -74,13 +81,13 @@ public class AccountingController {
 
     @RequestMapping(value = "/reportHours", method = RequestMethod.POST)
     public void reportHours(@RequestBody Work workUnit) {
-        List<Integer> inPositionIds = inPositionRepository.findPositionIdByActorId(workUnit.getWorker());
+        List<Integer> inPositionIds = inPositionRepository.findPositionIdByActorId(workUnit.getWorker().getId());
 
         //TODO kust ma team millises positionis tehtud?
         // int inPositionId = inPositionRepository.findInPositionIdByEmployeeIdAndPositionId(workUnit.getWorker(), correctPositionId);
 
         int teamId = teamRepository.getTeamId(workUnit.getTeam().getName());
-        int inTeamId = inTeamRepository.getInTeamIdByActorAndTeamId(workUnit.getWorker(), teamId);
+        int inTeamId = inTeamRepository.getInTeamIdByActorAndTeamId(workUnit.getWorker().getId(), teamId);
         int workTypeId = workTypeRepository.getWorkTypeId(workUnit.getCategory());
 
         workRepository.addWorkUnit(workTypeId, inPositionIds.get(0), inTeamId, stringToDate(workUnit.getDate()), workUnit.getHoursSpent(),
@@ -99,7 +106,7 @@ public class AccountingController {
     public void requestVacation(@RequestBody Vacation vacation) {
         int vacationTypeId = vacationTypeRepository.getVacationTypIdByName(vacation.getType());
 
-        vacationRepository.addVacation(vacation.getRequester(), vacationTypeId, stringToDate(vacation.getFromDate()),
+        vacationRepository.addVacation(vacation.getRequester().getId(), vacationTypeId, stringToDate(vacation.getFromDate()),
                 stringToDate(vacation.getToDate()), vacation.getDescription());
     }
 
@@ -110,7 +117,9 @@ public class AccountingController {
 
         for (web.db.datamodel.Vacation vacation : vacationsModel) {
             String type = vacationTypeRepository.getVacationTypeName(vacation.getVacationTypeId());
-            vacations.add(new Vacation(vacation.getVacationId(), vacation.getReviewerId(), vacation.getRequestedByActor(),
+
+            Employee requester = getShortVersionEmployeeByActorId(id);
+            vacations.add(new Vacation(vacation.getVacationId(), vacation.getReviewerId(), requester,
                     type, vacation.getApproved(), dateToString(vacation.getFromDate()), dateToString(vacation.getToDate()),
                     vacation.getDescription()));
         }
@@ -144,7 +153,8 @@ public class AccountingController {
                     String teamName = teamRepository.getTeamName(teamId);
                     Actor actorClient = getClientByTeam(teamId);
                     Client client = actorClient == null ? null : new Client(actorClient.getActorId(), actorClient.getName());
-                    workToReview.add(new Work(actor.getActorId(), workType, workUnit.getTimeSpent(), new Team(teamName, client),
+                    Employee employee = getShortVersionEmployeeByActorId(actor.getActorId());
+                    workToReview.add(new Work(workUnit.getWorkUnitId(), employee, workType, workUnit.getTimeSpent(), new Team(teamName, client),
                             positionName, workUnit.getTasknumber(), workUnit.getDescription()));
                 }
             }
@@ -161,9 +171,9 @@ public class AccountingController {
             List<web.db.datamodel.Vacation> vacationsModel = vacationRepository.getEmployeeVacationsToReview(subordinate.getActorId());
             for (web.db.datamodel.Vacation vacation : vacationsModel) {
                 String vacationType = vacationTypeRepository.getVacationTypeName(vacation.getVacationTypeId());
-                vacations.add(new Vacation(vacation.getVacationId(), vacation.getRequestedByActor(),
-                        vacationType, dateToString(vacation.getFromDate()), dateToString(vacation.getToDate()),
-                        vacation.getDescription()));
+                Employee requester = getShortVersionEmployeeByActorId(vacation.getRequestedByActor());
+                vacations.add(new Vacation(vacation.getVacationId(), requester, vacationType,
+                        dateToString(vacation.getFromDate()), dateToString(vacation.getToDate()), vacation.getDescription()));
             }
         }
         return vacations;
