@@ -23,7 +23,7 @@ public class WorkUnit {
     @Column(name = "task_number")
     private String tasknumber;
     private  String description;
-    private Boolean approver;
+    private Boolean approved;
     @Column(name = "reviewer_actor_id")
     private Integer reviewerId;
 

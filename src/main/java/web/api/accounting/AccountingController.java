@@ -6,6 +6,7 @@ import web.api.actor.Client;
 import web.api.actor.Employee;
 import web.api.actor.Team;
 import web.db.datamodel.Actor;
+import web.db.datamodel.InTeam;
 import web.db.datamodel.WorkUnit;
 import web.db.repositories.VacationRepository;
 import web.db.repositories.VacationTypeRepository;
@@ -119,8 +120,13 @@ public class AccountingController {
             String type = vacationTypeRepository.getVacationTypeName(vacation.getVacationTypeId());
 
             Employee requester = getShortVersionEmployeeByActorId(id);
-            vacations.add(new Vacation(vacation.getVacationId(), vacation.getReviewerId(), requester,
-                    type, vacation.getApproved(), dateToString(vacation.getFromDate()), dateToString(vacation.getToDate()),
+            vacations.add(new Vacation(vacation.getVacationId(),
+                    vacation.getReviewerId(),
+                    requester,
+                    type,
+                    vacation.getApproved(),
+                    dateToString(vacation.getFromDate()),
+                    dateToString(vacation.getToDate()),
                     vacation.getDescription()));
         }
 
@@ -154,8 +160,8 @@ public class AccountingController {
                     Actor actorClient = getClientByTeam(teamId);
                     Client client = actorClient == null ? null : new Client(actorClient.getActorId(), actorClient.getName());
                     Employee employee = getShortVersionEmployeeByActorId(actor.getActorId());
-                    workToReview.add(new Work(workUnit.getWorkUnitId(), employee, workType, workUnit.getTimeSpent(), new Team(teamName, client),
-                            positionName, workUnit.getTasknumber(), workUnit.getDescription()));
+                    workToReview.add(new Work(workUnit.getWorkUnitId(), employee, positionName, workUnit.getTimeSpent(), new Team(teamName, client),
+                            workType, workUnit.getTasknumber(), workUnit.getDescription()));
                 }
             }
         }
@@ -171,12 +177,26 @@ public class AccountingController {
             List<web.db.datamodel.Vacation> vacationsModel = vacationRepository.getEmployeeVacationsToReview(subordinate.getActorId());
             for (web.db.datamodel.Vacation vacation : vacationsModel) {
                 String vacationType = vacationTypeRepository.getVacationTypeName(vacation.getVacationTypeId());
-                Employee requester = getShortVersionEmployeeByActorId(vacation.getRequestedByActor());
+                Actor actorEmployee = actorRepository.getOne(vacation.getRequestedByActor());
+                Employee requester = new Employee(actorEmployee.getActorId(), actorEmployee.getName(), null, getTeams(actorEmployee.getActorId()),
+                        actorEmployee.getScore(), actorEmployee.getIdentificator(), actorEmployee.getIban());
                 vacations.add(new Vacation(vacation.getVacationId(), requester, vacationType,
                         dateToString(vacation.getFromDate()), dateToString(vacation.getToDate()), vacation.getDescription()));
             }
         }
         return vacations;
+    }
+
+    private List<Team> getTeams(int actorId) {
+        List<InTeam> teamsModel = inTeamRepository.getInTeamByActorId(actorId);
+        List<Team> teams = new ArrayList<>();
+        for (InTeam inTeam : teamsModel) {
+            String teamName = teamRepository.getTeamName(inTeam.getTeamId());
+            Actor clientActor = getClientByTeam(inTeam.getTeamId());
+            Client client = new Client(clientActor.getActorId(), clientActor.getName(), clientActor.getIdentificator(), clientActor.getScore());
+            teams.add(new Team(teamName, client));
+        }
+        return teams;
     }
 
     @RequestMapping("/addActionToVacation")

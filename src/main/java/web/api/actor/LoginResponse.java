@@ -6,6 +6,7 @@ public class LoginResponse {
     private String sessionId;
     private int employeeId;
     private boolean isManager;
+    private String name;
 
     public void setResponseCode(int responseCode) {
         this.responseCode = responseCode;
@@ -45,5 +46,21 @@ public class LoginResponse {
 
     public void setIsManager(boolean isManager) {
         this.isManager = isManager;
+    }
+
+    public void setManager(boolean manager) {
+        isManager = manager;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isManager() {
+        return isManager;
+    }
+
+    public String getName() {
+        return name;
     }
 }

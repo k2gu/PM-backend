@@ -20,5 +20,8 @@ public interface ActorRepository extends JpaRepository<Actor, Integer> {
 
     @Query(value = "SELECT * FROM actor WHERE reports_to_actor_id=:id", nativeQuery = true)
     List<Actor> getSubordinates(@Param("id") int managerId);
+
+    @Query(value = "SELECT actor_name FROM actor WHERE actor_id=:id", nativeQuery = true)
+    String getEmployeeName(@Param("id") int id);
 }
 

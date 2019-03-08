@@ -12,7 +12,7 @@ public class Vacation {
     @Column(name = "requested_by_actor_id")
     private int requestedByActor;
     @Column(name = "reviewer_actor_id")
-    private int reviewerId;
+    private Integer reviewerId;
     @Column(name = "vacation_type_id")
     private int vacationTypeId;
     private Boolean approved;
@@ -41,11 +41,11 @@ public class Vacation {
         this.requestedByActor = requestedByActor;
     }
 
-    public int getReviewerId() {
+    public Integer getReviewerId() {
         return reviewerId;
     }
 
-    public void setReviewerId(int reviewerId) {
+    public void setReviewerId(Integer reviewerId) {
         this.reviewerId = reviewerId;
     }
 

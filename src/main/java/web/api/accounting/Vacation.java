@@ -13,7 +13,7 @@ public class Vacation {
     private String toDate;
     private String description;
 
-    public Vacation(Integer id, int reviewer, Employee requester, String type, Boolean approved, String fromDate, String toDate, String description) {
+    public Vacation(Integer id, Integer reviewer, Employee requester, String type, Boolean approved, String fromDate, String toDate, String description) {
         this.id = id;
         this.reviewer = reviewer;
         this.requester = requester;
@@ -30,6 +30,9 @@ public class Vacation {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.description = description;
+    }
+
+    public Vacation( ) {
     }
 
     public int getId() {

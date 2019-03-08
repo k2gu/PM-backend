@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface WorkRepository extends JpaRepository<WorkUnit, Integer> {
 
-    @Query(value = "SELECT * FROM work_unit WHERE in_position_id=:id", nativeQuery = true)
+    @Query(value = " SELECT * FROM work_unit WHERE in_position_id=:id", nativeQuery = true)
     List<WorkUnit> getReportedWorkInPosition(@Param("id") int inPositionId);
 
     @Transactional
@@ -30,7 +30,7 @@ public interface WorkRepository extends JpaRepository<WorkUnit, Integer> {
     @Query(value = "UPDATE work_unit SET reviewer_actor_id=:id AND approved=:approved WHERE work_id=:work_id", nativeQuery = true)
     void addActionToWork(@Param("id") int id, @Param("approved") boolean isApproved, @Param("work_id") int workId);
 
-    @Query(value = "SELECT * FROM work_unit WHERE in_position_id=:id AND reviewer_actor_id=NULL AND approved=NULL", nativeQuery = true)
+    @Query(value = "SELECT * FROM work_unit WHERE in_position_id=:id AND reviewer_actor_id IS NULL AND approved IS NULL", nativeQuery = true)
     List<WorkUnit> getReportedWorkInPositionToReview(@Param("id") int inPositionId);
 }
 

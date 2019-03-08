@@ -12,7 +12,7 @@ import java.util.List;
 public interface InTeamRepository extends JpaRepository<InTeam, Integer> {
 
     @Query(value = "SELECT * FROM in_team WHERE actor_id=:id", nativeQuery = true)
-    List<InTeam> getTeamByActorId(@Param("id") int id);
+    List<InTeam> getInTeamByActorId(@Param("id") int id);
 
     @Query(value = "SELECT actor_id FROM in_team WHERE team_id=:id", nativeQuery = true)
     List<Integer> getTeamMembers(@Param("id") int teamID);

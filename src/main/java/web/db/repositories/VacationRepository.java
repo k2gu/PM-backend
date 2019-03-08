@@ -16,7 +16,7 @@ public interface VacationRepository extends JpaRepository<Vacation, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO message (requested_by_actor_id, vacation_type_id, from_date, to_date, description) " +
+    @Query(value = "INSERT INTO vacation (requested_by_actor_id, vacation_type_id, from_date, to_date, description) " +
             "VALUES (:requester_id, :vacation_type_id, :from_date, :to_date, :description)", nativeQuery = true)
     void addVacation(@Param("requester_id") int id, @Param("vacation_type_id") int vacation_type_id, @Param("from_date") Date from_date,
                      @Param("to_date") Date to_date, @Param("description") String description);
@@ -24,7 +24,7 @@ public interface VacationRepository extends JpaRepository<Vacation, Integer> {
     @Query(value = "SELECT * FROM vacation WHERE requested_by_actor_id=:id", nativeQuery = true)
     List<Vacation> getEmployeeVacations(@Param("id") int id);
 
-    @Query(value = "SELECT * FROM vacation WHERE requested_by_actor=:id AND reviewer_actor_id=NULL AND approved=NULL", nativeQuery = true)
+    @Query(value = "SELECT * FROM vacation WHERE requested_by_actor_id=:id AND reviewer_actor_id IS NULL AND approved IS NULL", nativeQuery = true)
     List<Vacation> getEmployeeVacationsToReview(@Param("id") int employeeId);
 
     @Transactional

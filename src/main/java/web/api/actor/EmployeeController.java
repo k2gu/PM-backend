@@ -60,7 +60,7 @@ public class EmployeeController {
         Position position = positionsRepository.getPositionById(positionIds.get(0));
         web.api.actor.Position convertedPosition = new web.api.actor.Position(positionName, position.getPricePerHour(),
                 position.getSalaryCoef());
-        List<InTeam> team = inTeamRepository.getTeamByActorId(id);
+        List<InTeam> team = inTeamRepository.getInTeamByActorId(id);
         List<web.api.actor.Team> convertedTeam = addTeamNamesToTeam(team);
         return new Employee(actor.getActorId(), actor.getName(), convertedPosition, convertedTeam,
                 actor.getScore(), actor.getIdentificator(), null);
