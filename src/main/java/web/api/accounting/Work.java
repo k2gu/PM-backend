@@ -14,9 +14,8 @@ public class Work {
     private String description;
     private Employee employee;
 
-    Work(Integer id, Employee employee, String workDone, double hoursSpent, Team team, String category, String taskID, String description) {
+    Work(Integer id, Employee employee , double hoursSpent, Team team, String category, String taskID, String description) {
         this.id = id;
-        this.date = workDone;
         this.employee = employee;
         this.hoursSpent = hoursSpent;
         this.team = team;

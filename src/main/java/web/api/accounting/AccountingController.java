@@ -47,8 +47,6 @@ public class AccountingController {
         List<Integer> inPositionIds = inPositionRepository.findInPositionIdByActorId(employeeId);
         for (int inPositionId : inPositionIds) {
             List<web.db.datamodel.WorkUnit> workUnits = workRepository.getReportedWorkInPosition(inPositionId);
-            int positionId = inPositionRepository.findPositionIdByInPositionID(inPositionId);
-            String positionName = positionsRepository.findPositionName(positionId);
             for (WorkUnit workUnit : workUnits) {
                 String workType = workTypeRepository.getWorkTypeName(workUnit.getWorkTypeId());
                 int teamId = inTeamRepository.getTeamId(workUnit.getInTeamId());
@@ -56,8 +54,8 @@ public class AccountingController {
                 Actor actorClient = getClientByTeam(teamId);
                 Client client = actorClient == null ? null : new Client(actorClient.getActorId(), actorClient.getName());
                 Employee employee = getShortVersionEmployeeByActorId(employeeId);
-                convertedList.add(new Work(workUnit.getWorkUnitId(), employee, workType, workUnit.getTimeSpent(), new Team(teamName, client),
-                        positionName, workUnit.getTasknumber(), workUnit.getDescription()));
+                convertedList.add(new Work(workUnit.getWorkUnitId(), employee, workUnit.getTimeSpent(), new Team(teamName, client),
+                        workType, workUnit.getTasknumber(), workUnit.getDescription()));
             }
         }
 
@@ -151,8 +149,6 @@ public class AccountingController {
             List<Integer> inPositionIds = inPositionRepository.findInPositionIdByActorId(actor.getActorId());
             for (int inPositionId : inPositionIds) {
                 List<web.db.datamodel.WorkUnit> workUnits = workRepository.getReportedWorkInPositionToReview(inPositionId);
-                int positionId = inPositionRepository.findPositionIdByInPositionID(inPositionId);
-                String positionName = positionsRepository.findPositionName(positionId);
                 for (WorkUnit workUnit : workUnits) {
                     String workType = workTypeRepository.getWorkTypeName(workUnit.getWorkTypeId());
                     int teamId = inTeamRepository.getTeamId(workUnit.getInTeamId());
@@ -160,7 +156,7 @@ public class AccountingController {
                     Actor actorClient = getClientByTeam(teamId);
                     Client client = actorClient == null ? null : new Client(actorClient.getActorId(), actorClient.getName());
                     Employee employee = getShortVersionEmployeeByActorId(actor.getActorId());
-                    workToReview.add(new Work(workUnit.getWorkUnitId(), employee, positionName, workUnit.getTimeSpent(), new Team(teamName, client),
+                    workToReview.add(new Work(workUnit.getWorkUnitId(), employee, workUnit.getTimeSpent(), new Team(teamName, client),
                             workType, workUnit.getTasknumber(), workUnit.getDescription()));
                 }
             }
