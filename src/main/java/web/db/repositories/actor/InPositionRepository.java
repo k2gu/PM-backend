@@ -14,9 +14,6 @@ public interface InPositionRepository extends JpaRepository<InPosition, Integer>
     @Query(value = "SELECT position_id FROM in_position WHERE actor_id=:id", nativeQuery = true)
     List<Integer> findPositionIdByActorId(@Param("id") int id);
 
-    @Query(value = "SELECT in_position_id FROM in_position WHERE actor_id=:employeeId AND position_id=:positionId", nativeQuery = true)
-    int findInPositionIdByEmployeeIdAndPositionId(@Param("employeeId")int employeeId, @Param("positionId")int positionId);
-
     @Query(value = "SELECT position_id FROM in_position WHERE in_position_id=:id", nativeQuery = true)
     int findPositionIdByInPositionID(@Param("id") int inPositionId);
 

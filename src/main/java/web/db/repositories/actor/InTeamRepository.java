@@ -20,7 +20,7 @@ public interface InTeamRepository extends JpaRepository<InTeam, Integer> {
     @Query(value = "SELECT team_id FROM in_team WHERE in_team_id=:id", nativeQuery = true)
     int getTeamId(@Param("id")int inTeamId);
 
-    @Query(value = "SELECT in_team_id FROM in_team WHERE iteam_id=:teamId AND actor_id=:id", nativeQuery = true)
+    @Query(value = "SELECT in_team_id FROM in_team WHERE team_id=:teamId AND actor_id=:id", nativeQuery = true)
     int getInTeamIdByActorAndTeamId(@Param("id")int employeeId, @Param("teamId")int teamId);
 }
 

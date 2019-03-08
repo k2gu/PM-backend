@@ -26,10 +26,10 @@ public class EmployeeController {
 
     @RequestMapping("/allEmployees")
     public List<Employee> getAllEmployees() {
-        return convertsActorToEmployee(actorRepository.getAllEmployees());
+        return convertActorToEmployee(actorRepository.getAllEmployees());
     }
 
-    private List<Employee> convertsActorToEmployee(List<Actor> allEmployees) {
+    private List<Employee> convertActorToEmployee(List<Actor> allEmployees) {
         List<Employee> employees = new ArrayList<>();
         for (Actor actor : allEmployees) {
             int id = actor.getActorId();
@@ -39,6 +39,11 @@ public class EmployeeController {
             employees.add(employee);
         }
         return employees;
+    }
+
+    @RequestMapping("/mySubordinates")
+    public List<Employee> getMySubordinates(@RequestParam("id") int managerId) {
+        return convertActorToEmployee(actorRepository.getSubordinates(managerId));
     }
 
     private String getPositionName(int id) {

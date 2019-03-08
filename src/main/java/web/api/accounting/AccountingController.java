@@ -81,7 +81,7 @@ public class AccountingController {
 
     @RequestMapping(value = "/reportHours", method = RequestMethod.POST)
     public void reportHours(@RequestBody Work workUnit) {
-        List<Integer> inPositionIds = inPositionRepository.findPositionIdByActorId(workUnit.getWorker().getId());
+        List<Integer> inPositionIds = inPositionRepository.findInPositionIdByActorId(workUnit.getWorker().getId());
 
         //TODO kust ma team millises positionis tehtud?
         // int inPositionId = inPositionRepository.findInPositionIdByEmployeeIdAndPositionId(workUnit.getWorker(), correctPositionId);
@@ -191,5 +191,10 @@ public class AccountingController {
                                     @RequestParam(value = "approved") boolean isApproved,
                                     @RequestParam(value = "workUnitId") int workId) {
         workRepository.addActionToWork(id, isApproved, workId);
+    }
+
+    @RequestMapping("/workCategories")
+    public List<String> getWorkCategories() {
+        return workTypeRepository.getWorkTypeNames();
     }
 }

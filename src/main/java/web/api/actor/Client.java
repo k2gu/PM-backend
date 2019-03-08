@@ -6,6 +6,9 @@ public class Client {
     private double score;
     private int id;
 
+    public Client() {
+    }
+
     public Client(int id, String name, String businessNumber, double score) {
         this.name = name;
         this.businessNumber = businessNumber;
