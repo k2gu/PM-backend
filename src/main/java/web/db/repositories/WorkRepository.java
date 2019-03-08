@@ -27,7 +27,7 @@ public interface WorkRepository extends JpaRepository<WorkUnit, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE work_unit SET reviewer_actor_id=:id AND approved=:approved WHERE work_id=:work_id", nativeQuery = true)
+    @Query(value = "UPDATE work_unit SET reviewer_actor_id=:id, approved=:approved WHERE work_id=:work_id", nativeQuery = true)
     void addActionToWork(@Param("id") int id, @Param("approved") boolean isApproved, @Param("work_id") int workId);
 
     @Query(value = "SELECT * FROM work_unit WHERE in_position_id=:id AND reviewer_actor_id IS NULL AND approved IS NULL", nativeQuery = true)

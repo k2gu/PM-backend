@@ -29,6 +29,6 @@ public interface VacationRepository extends JpaRepository<Vacation, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE vacation SET reviewer_actor_id=:id AND approved=:approved WHERE vacation_id=:vacationId", nativeQuery = true)
-    String addActionToVacation(@Param("id") int managerId, @Param("approved") boolean isApproved, @Param("vacationId") int vacationId);
+    @Query(value = "UPDATE vacation SET reviewer_actor_id=:id, approved=:approved WHERE vacation_id=:vacationId", nativeQuery = true)
+    void addActionToVacation(@Param("id") int managerId, @Param("approved") boolean isApproved, @Param("vacationId") int vacationId);
 }
