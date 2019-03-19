@@ -3,6 +3,7 @@ package web.api.actor;
 class Credentials {
     private String username;
     private String password;
+    private String salt;
 
     public Credentials() {
     }
@@ -10,6 +11,14 @@ class Credentials {
     public Credentials(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public void setUsername(String username) {

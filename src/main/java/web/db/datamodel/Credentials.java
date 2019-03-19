@@ -13,6 +13,9 @@ public class Credentials {
     String passwordhash;
     @Column(name = "actor_id")
     int actorId;
+    String hash256;
+    String hash512;
+    String salt;
 
     public Credentials()  {
     }
@@ -47,5 +50,29 @@ public class Credentials {
 
     public void setActorId(int actorId) {
         this.actorId = actorId;
+    }
+
+    public String getHash256() {
+        return hash256;
+    }
+
+    public void setHash256(String hash256) {
+        this.hash256 = hash256;
+    }
+
+    public String getHash512() {
+        return hash512;
+    }
+
+    public void setHash512(String hash512) {
+        this.hash512 = hash512;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

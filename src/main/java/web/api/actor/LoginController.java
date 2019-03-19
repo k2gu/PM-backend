@@ -16,8 +16,28 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public LoginResponse getEmployeeDetails(@RequestBody Credentials credentials) {
+        Integer actorIdToLogIn = credentialsRepository.getActorIdWith512Hash(credentials.getUsername(), credentials.getPassword());
+        return login(actorIdToLogIn);
+    }
+
+    @RequestMapping(value = "/login1", method = RequestMethod.POST)
+    @ResponseBody
+    public LoginResponse getEmployeeDetailsWithSha256(@RequestBody Credentials credentials) {
+        Integer actorIdToLogIn = credentialsRepository.getActorIdWith256Hash(credentials.getUsername(), credentials.getPassword());
+        return login(actorIdToLogIn);
+    }
+
+    @RequestMapping("/salt")
+    @ResponseBody
+    public Credentials getSalt(@RequestParam("username") String username) {
+        Credentials credentials = new Credentials();
+        credentials.setUsername(username);
+        credentials.setSalt(credentialsRepository.getPasswordSalt(username));
+        return credentials;
+    }
+
+    private LoginResponse login(Integer actorIdToLogIn) {
         LoginResponse response = new LoginResponse();
-        Integer actorIdToLogIn = credentialsRepository.getActorId(credentials.getUsername(), credentials.getPassword());
         if (actorIdToLogIn != null) {
             response.setMessage("OK");
             response.setResponseCode(200);
