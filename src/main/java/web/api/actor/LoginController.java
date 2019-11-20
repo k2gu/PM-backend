@@ -1,7 +1,9 @@
 package web.api.actor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import web.db.repositories.CredentialsRepository;
 import web.db.repositories.actor.ActorRepository;
 
@@ -15,8 +17,9 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public LoginResponse getEmployeeDetails(@RequestBody Credentials credentials) {
-        Integer actorIdToLogIn = credentialsRepository.getActorIdWith512Hash(credentials.getUsername(), credentials.getPassword());
+    public LoginResponse getEmployeeDetails(@RequestBody Credentials credentials) throws HttpClientErrorException.Unauthorized {
+        //TODO Integer actorIdToLogIn = credentialsRepository.getActorIdWith512Hash(credentials.getUsername(), credentials.getPassword());
+        Integer actorIdToLogIn = credentialsRepository.getActorIdWithPlainTextPassword(credentials.getUsername(), credentials.getPassword());
         return login(actorIdToLogIn);
     }
 
@@ -37,21 +40,22 @@ public class LoginController {
     }
 
     private LoginResponse login(Integer actorIdToLogIn) {
-        LoginResponse response = new LoginResponse();
         if (actorIdToLogIn != null) {
-            response.setMessage("OK");
-            response.setResponseCode(200);
-            //TODO generate sessionID
-            response.setSessionId("54908324i0ejfiohfjlsfesfe");
-            response.setEmployeeId(actorIdToLogIn);
-            response.setName(actorRepository.getEmployeeName(actorIdToLogIn));
-            boolean isManager = actorRepository.getActorTypeId(actorIdToLogIn) == 2;
-            response.setIsManager(isManager);
-
+            return constructLoginResponse(actorIdToLogIn);
         } else {
-            response.setMessage("Failed to authenticate the user");
-            response.setResponseCode(401);
+
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, "Failed to authenticate the user");
         }
+    }
+
+    private LoginResponse constructLoginResponse(Integer actorIdToLogIn) {
+        LoginResponse response = new LoginResponse();
+        //TODO generate sessionID
+        response.setSessionId("54908324i0ejfiohfjlsfesfe");
+        response.setEmployeeId(actorIdToLogIn);
+        response.setName(actorRepository.getEmployeeName(actorIdToLogIn));
+        boolean isManager = actorRepository.getActorTypeId(actorIdToLogIn) == 2;
+        response.setIsManager(isManager);
         return response;
     }
 }
